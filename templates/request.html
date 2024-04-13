@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number of Days Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="mb-3">Enter Number of Days</h2>
+                    <form id="numberOfDaysForm" action="{{ url_for('request_book', book_id=book_id) }}" method="POST">
+                    <div class="form-group">
+                        <label for="numberOfDays">Number of Days:</label>
+                        <input type="number" class="form-control" id="numberOfDays" name="required_days" required>
+                    </div>
+                    <input type="hidden" name="book_id" value="{{ book_id }}">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

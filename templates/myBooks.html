@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Books</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{{url_for('user_dashboard')}}">User Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('my_books') }}">My Books</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('user_dashboard')}}">Books</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Stats</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" action="{{ url_for('search_books') }}" method="GET">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search Books" aria-label="Search" name="query">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <form action="{{ url_for('logout') }}" method="post" class="form-inline my-2 my-lg-0 ml-3">
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>My Borrowed Books</h2>
+        <div class="row">
+            {% for borrowed_book in borrowed_books %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ borrowed_book.book.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ borrowed_book.book.author }}</h6>
+                            <!-- Add more details here if needed -->
+                            <form action="{{ url_for('return_book', borrowed_book_id=borrowed_book.id) }}" method="post">
+                                <button type="submit" class="btn btn-primary">Return Book</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="container mt-5">
+        <h2>My Returned Books</h2>
+        <div class="row">
+            {% for returned_book in returned_books %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ returned_book.book.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ returned_book.book.author }}</h6>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
