@@ -29,13 +29,12 @@
                     <a class="nav-link" href="{{url_for('user_dashboard')}}">Books</a>
                 </li>
             </ul>
-            <!-- <form class="form-inline my-2 my-lg-0" action="{{ url_for('search_books') }}" method="GET">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search Books" aria-label="Search" name="query">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline my-2 my-lg-0" action="{{ url_for('user_loginpg') }}" method="GET">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
             </form>
-            <form action="{{ url_for('logout') }}" method="post" class="form-inline my-2 my-lg-0 ml-3">
-                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
-            </form> -->
+            <form action="{{ url_for('user_signuppg') }}" method="GET" class="form-inline my-2 my-lg-0 ml-3">
+                <button class="btn btn-outline-warning" type="submit">Register</button>
+            </form>
         </div>
     </nav>
 </body>

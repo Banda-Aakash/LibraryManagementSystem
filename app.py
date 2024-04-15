@@ -78,7 +78,7 @@ def user_login():
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('home.html')
+    return render_template('userSignUp.html')
 
 @app.route('/user_signup', methods=['GET'])
 def user_signuppg():
