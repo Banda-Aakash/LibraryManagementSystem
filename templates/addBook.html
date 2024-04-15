@@ -7,6 +7,32 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{{url_for('librarian_dashboard')}}">Librarian Dashboard</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{{url_for('view_requests')}}">Requests</a>
+            </li>
+  
+            <!-- <li class="nav-item active">
+              <a class="nav-link" href="#">Stats</a>
+            </li> -->
+          </ul>
+        </div>
+    </nav>
     <div class="container mt-5">
         <h2>Add Book</h2>
         <form action="{{ url_for('add_book_to_section', section_id=section_id) }}" method="POST">
