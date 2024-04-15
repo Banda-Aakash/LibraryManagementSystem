@@ -76,6 +76,10 @@ def user_login():
     return render_template('userLogin.html')
 
 
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('home.html')
+
 @app.route('/user_signup', methods=['GET'])
 def user_signuppg():
     return render_template('userSignUp.html')
