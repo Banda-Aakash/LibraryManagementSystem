@@ -5,20 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number of Days Form</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('/static/BackImg.jpg');
+            /* background-color: black; */
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+    </style>
     
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+        <a class="navbar-brand" href="{{url_for('user_dashboard')}}">User Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('my_books') }}">My Books</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('user_dashboard')}}">Books</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('user_statisticspg')}}">Stats</a>
+                </li>
+            </ul>
+            
+            <form action="{{ url_for('logout') }}" method="post" class="form-inline my-2 my-lg-0 ml-3">
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2 class="mb-3">Enter Number of Days</h2>
+                <h2 class="mb-3" style="color: white;">Enter Number of Days</h2>
                     <form id="numberOfDaysForm" action="{{ url_for('request_book', book_id=book_id) }}" method="POST">
                     <div class="form-group">
-                        <label for="numberOfDays">Number of Days:</label>
+                        <label for="numberOfDays" style="color: white;">Number of Days:</label>
                         <input type="number" class="form-control" id="numberOfDays" name="required_days" required>
                     </div>
                     <input type="hidden" name="book_id" value="{{ book_id }}">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Request</button>
                 </form>
             </div>
         </div>

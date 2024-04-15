@@ -3,9 +3,13 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime,timedelta
+from sqlalchemy import func
 
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 app = Flask(__name__)
-
+import threading
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
 app.config['SECRET_KEY'] = 'abcdef'
@@ -158,8 +162,8 @@ def search_books():
         # Perform search in the title and author fields of books
         search_results = Book.query.filter((Book.title.ilike(f'%{query}%')) | (Book.author.ilike(f'%{query}%'))).all()
     else:
-        search_results = []
-    return render_template('userDashboard.html', search_results=search_results, query=query)
+        search_results = Book.query.all()
+    return render_template('userDashboard.html', all_books=search_results, query=query)
 
 
 class Librarian(db.Model):
@@ -393,6 +397,58 @@ def return_book(borrowed_book_id):
     else:
         flash('Borrowed book not found!', 'danger')
     return redirect(url_for('user_dashboard'))
+
+
+
+def generate_plot(most_borrowed_books):
+    plt.figure(figsize=(10, 6))
+    books = [book.book.title for book in most_borrowed_books]
+    counts = [BorrowedBook.query.filter_by(book_id=book.book_id).count() for book in most_borrowed_books]
+
+    plt.bar(books, counts)
+    plt.xlabel('Books')
+    plt.ylabel('Number of Times Borrowed')
+    plt.title('Most Borrowed Books')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Convert the plot to a base64 string
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plot_data = base64.b64encode(buffer.getvalue()).decode()
+    plt.close()
+
+    return plot_data
+
+@app.route('/user_statistics', methods=['GET'])
+def user_statisticspg():
+    # Query to get user information
+    user_id = session['user_id']
+    user = User.query.get(user_id)
+
+    # Query to get total number of books borrowed by the user
+    total_books_borrowed = BorrowedBook.query.filter_by(user_id=user_id).count()
+
+    # Query to calculate average borrowing duration
+    avg_borrowing_duration = BorrowedBook.query.with_entities(func.avg(BorrowedBook.return_date - BorrowedBook.borrow_date)).filter_by(user_id=user_id).scalar()
+
+    # Query to get most borrowed books
+    most_borrowed_books = BorrowedBook.query.filter_by(user_id=user_id).group_by(BorrowedBook.book_id).order_by(func.count().desc()).limit(5).all()
+
+    # Query to get recent borrowed books
+    recent_borrowed_books = BorrowedBook.query.filter_by(user_id=user_id).order_by(BorrowedBook.borrow_date.desc()).limit(5).all()
+
+    # Calculate return rate
+    total_books_returned = BorrowedBook.query.filter(BorrowedBook.user_id == user_id, BorrowedBook.return_date != None).count()
+    return_rate = (total_books_returned / total_books_borrowed) * 100 if total_books_borrowed > 0 else 0
+
+    # plot_data = generate_plot(most_borrowed_books)
+
+    return render_template('userStatistics.html', user=user, total_books_borrowed=total_books_borrowed,
+                           avg_borrowing_duration=avg_borrowing_duration, most_borrowed_books=most_borrowed_books,
+                           recent_borrowed_books=recent_borrowed_books, return_rate=return_rate,
+                           )
 
 if __name__ == '__main__':
     with app.app_context():

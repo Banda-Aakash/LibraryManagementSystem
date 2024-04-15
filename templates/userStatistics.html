@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Statistics</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('static/BackImg.jpg');
+            /* background-color: black; */
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+        <a class="navbar-brand" href="{{url_for('user_dashboard')}}">User Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('my_books') }}">My Books</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('user_dashboard')}}">Books</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('user_statisticspg')}}">Stats</a>
+                </li>
+            </ul>
+            <form action="{{ url_for('logout') }}" method="post" class="form-inline my-2 my-lg-0 ml-3">
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container mt-5" style="color: white;">
+        <h2>User Statistics for {{ user.username }}</h2>
+        <p>Total Books Borrowed: {{ total_books_borrowed }}</p>
+        <p>Average Borrowing Duration: {{ avg_borrowing_duration }} days</p>
+        <h3>Most Borrowed Books:</h3>
+        <ul>
+            {% for book in most_borrowed_books %}
+                <li>{{ book.book.title }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Recent Borrowed Books:</h3>
+        <ul>
+            {% for book in recent_borrowed_books %}
+                <li>{{ book.book.title }} ({{ book.borrow_date }})</li>
+            {% endfor %}
+        </ul>
+        <p>Return Rate: {{ return_rate }}%</p>
+        <!-- <div class="container mt-5">
+            <h2>Most Borrowed Books</h2>
+            <img src="data:image/png;base64,{{ plot_data }}" alt="Most Borrowed Books">
+        </div> -->
+    </div>
+</body>
+</html>
